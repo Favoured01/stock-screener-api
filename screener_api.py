@@ -14,7 +14,7 @@ app.add_middleware(
     allow_origins=["*"],
     allow_methods=["*"],
     allow_headers=["*"],
-
+)
 
 FINNHUB_API_KEY = os.getenv("FINNHUB_API_KEY")
   # Do NOT hardcode this in production. Use env variables!
