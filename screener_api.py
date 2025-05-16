@@ -3,6 +3,9 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import requests
 import datetime
+from pydantic import BaseModel
+from typing import List
+
 
 app = FastAPI()
 
@@ -25,10 +28,45 @@ def get_stock_price(symbol):
     return r.json() if r.status_code == 200 else None
 
 def get_stock_news(symbol):
+
     today = datetime.date.today().isoformat()
     url = f"https://finnhub.io/api/v1/company-news?symbol={symbol}&from={today}&to={today}&token={FINNHUB_API_KEY}"
     r = requests.get(url)
     return r.json() if r.status_code == 200 else []
+
+class SymbolRequest(BaseModel):
+    symbols: List[str]
+
+@app.post("/screen")
+async def screen_stocks(request: SymbolRequest):
+    results = []
+
+    for symbol in request.symbols:
+        try:
+            quote = get_stock_price(symbol)
+            current_price = quote["c"]
+            previous_close = quote["pc"]
+            gap = round(((current_price - previous_close) / previous_close) * 100, 2)
+
+            mock_float = 8000000
+            mock_volume = 5.5
+
+            if 2 <= current_price <= 20 and gap >= 10 and mock_float < 10_000_000:
+                news = get_stock_news(symbol)
+                headline = news[0]["headline"] if news else "None"
+                results.append({
+                    "symbol": symbol,
+                    "price": current_price,
+                    "gap": gap,
+                    "volume": mock_volume,
+                    "float": mock_float,
+                    "news": headline
+                })
+        except Exception:
+            continue
+
+    return {"results": results}
+
 
 @app.get("/screener")
 def screener():
