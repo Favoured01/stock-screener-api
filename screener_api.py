@@ -14,9 +14,10 @@ app.add_middleware(
     allow_origins=["*"],
     allow_methods=["*"],
     allow_headers=["*"],
-)
 
-FINNHUB_API_KEY = os.getenv("FINNHUB_API_KEY")'  # Do NOT hardcode this in production. Use env variables!
+
+FINNHUB_API_KEY = os.getenv("FINNHUB_API_KEY")
+  # Do NOT hardcode this in production. Use env variables!
 
 def get_stock_price(symbol):
     url = f"https://finnhub.io/api/v1/quote?symbol={symbol}&token={FINNHUB_API_KEY}"
