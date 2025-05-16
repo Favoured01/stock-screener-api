@@ -12,6 +12,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+@app.get("/")
+def root():
+    return {"message": "Stock Screener API is live!"}
 
 FINNHUB_API_KEY = os.getenv("FINNHUB_API_KEY")
   # Do NOT hardcode this in production. Use env variables!
