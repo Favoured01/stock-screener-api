@@ -51,7 +51,9 @@ async def screen_stocks(request: SymbolRequest):
             mock_float = 8000000
             mock_volume = 5.5
 
-            if 2 <= current_price <= 20 and gap >= 10 and mock_float < 10_000_000:
+            if current_price > 0:  # just a basic sanity check
+
+
                 news = get_stock_news(symbol)
                 headline = news[0]["headline"] if news else "None"
                 results.append({
