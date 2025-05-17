@@ -1,0 +1,16 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*.env
+.env
+venv/
+
+# IDE settings
+.vscode/
+.idea/
+
+# System files
+.DS_Store
+
+# Render deployment build files
+build/

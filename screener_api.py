@@ -48,21 +48,28 @@ async def screen_stocks(request: SymbolRequest):
             previous_close = quote["pc"]
             gap = round(((current_price - previous_close) / previous_close) * 100, 2)
 
-            mock_float = 8000000
-            mock_volume = 5.5
+            
+mock_float = 8000000
+mock_volume = 15_000_000  # today’s volume
+avg_volume = 9_000_000    # average past volume
 
-            if current_price > 0:  # just a basic sanity check
+# Volume spike check
+volume_spike = mock_volume > 1.5 * avg_volume
 
 
-                news = get_stock_news(symbol)
-                headline = news[0]["headline"] if news else "None"
-                results.append({
-                    "symbol": symbol,
-                    "price": current_price,
-                    "gap": gap,
-                    "volume": mock_volume,
-                    "float": mock_float,
-                    "news": headline
+            if current_price > 0 and volume_spike: # just a basic sanity check
+
+results.append({
+    "symbol": symbol,
+    "price": current_price,
+    "gap": gap,
+    "volume": mock_volume,
+    "avg_volume": avg_volume,
+    "float": mock_float,
+    "volume_spike": volume_spike,
+    "news": headline
+})
+
                 })
         except Exception:
             continue
