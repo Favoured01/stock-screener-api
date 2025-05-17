@@ -70,7 +70,7 @@ results.append({
     "news": headline
 })
 
-                })
+                
         except Exception:
             continue
 
